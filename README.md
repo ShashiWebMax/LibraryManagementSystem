@@ -15,6 +15,7 @@ The `dbSetup.sql` file in the root directory can be used to create the required 
 
 
 ### The system has these basic library management functions 
-* Regester and manage library members
+* Register and manage library members
 * Register and manage Books
 * Lend books, return books and track landed books
+* Register system users
