@@ -6,7 +6,10 @@ package UI;
 
 import DB.BookLending;
 import DB.Books;
+import DB.LendFacade;
 import DB.Members;
+import static java.awt.image.ImageObserver.ABORT;
+import static java.awt.image.ImageObserver.ERROR;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -146,9 +149,8 @@ public class LendBook extends javax.swing.JFrame {
                             .addComponent(searchByMemberIdInput, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchByNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
+                        .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -231,18 +233,8 @@ public class LendBook extends javax.swing.JFrame {
             return;
         }        
         String[] selectedMember = this.memberList.getSelectedValue().split("-");
-        //change book status as barrowed
-        Books books = new Books();
-        Map bookData = new HashMap<String, String>();
-        bookData.put("state","2");
-        books.update(bookData, this.bookId);
-        //add book barrow record
-        Map lendingData = new HashMap<String, String>();
-        lendingData.put("book_id",Integer.toString(this.bookId) );
-        lendingData.put("member_id",selectedMember[0]);
-        lendingData.put("state","1");
-        BookLending bookLending = new BookLending();
-        bookLending.insert(lendingData);      
+        //update the database
+        LendFacade.lendBook(this.bookId, Integer.parseInt(selectedMember[0]));           
         JOptionPane.showMessageDialog(null, "Book lending record added.");
         MainUI mainUI = new MainUI();
         mainUI.setVisible(true);        

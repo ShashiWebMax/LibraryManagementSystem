@@ -6,6 +6,7 @@ package UI;
 
 import DB.BookLending;
 import DB.Books;
+import DB.LendFacade;
 import DB.Users;
 import javax.swing.Box;
 import UI.LoginForm;
@@ -531,18 +532,12 @@ public class MainUI extends javax.swing.JFrame {
                    int input = JOptionPane.showConfirmDialog(null, "Do you want mark this book as returned?");
                     // 0=yes, 1=no, 2=cancel
                    if(input == 0){
-                        // marking book as available
-                        Books books = new Books();
-                        Map bookData = new HashMap<String, String>();
-                        bookData.put("state","1");
-                        books.update(bookData, Integer.parseInt(cmd[1]));
-                        //setting lending record as returned
-                        BookLending bookLending = new BookLending();
-                        bookLending.return_book(Integer.parseInt(cmd[1]));
-                        JOptionPane.showMessageDialog(null, "Book returned.");
-                        this.srcFrame.dispose();
-                        MainUI mainUI = new MainUI();
-                        mainUI.setVisible(true);
+                       //update the database
+                       LendFacade.returnBook(Integer.parseInt(cmd[1]));                       
+                       JOptionPane.showMessageDialog(null, "Book returned.");
+                       this.srcFrame.dispose();
+                       MainUI mainUI = new MainUI();
+                       mainUI.setVisible(true);
                    }
                } 
            }
